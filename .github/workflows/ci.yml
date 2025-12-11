@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install deps
+        run: |
+          pip install --upgrade pip
+          pip install ruff
+      - name: Lint with ruff
+        run: |
+          ruff check .
+
+  notebook-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install minimal deps
+        run: |
+          pip install --upgrade pip
+          pip install nbformat
+      - name: Notebook import smoke test (no execution)
+        run: |
+          python - <<'PY'
+          import nbformat
+          nbformat.read(open('deep_keras.ipynb'), as_version=4)
+          print(' Notebook read OK')
+          PY
+
