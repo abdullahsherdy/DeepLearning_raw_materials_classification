@@ -1,9 +1,7 @@
 .ipynb_checkpoints
 .venv
 .vscode
-data
+dataset
 section
 Test2.ipynb
 kaggle.json
-minc-2500.zip
-minc-2500
